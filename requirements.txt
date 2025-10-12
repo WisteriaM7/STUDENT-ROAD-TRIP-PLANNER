@@ -1,2 +1,2 @@
-langchain-ollama
+langchain
 matplotlib
