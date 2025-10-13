@@ -112,7 +112,7 @@ if st.button("✨ Generate My Trip Plan"):
 
             completion = client.chat.completions.create(
                 extra_headers={
-                    "HTTP-Referer": "https://studenttripplanner.streamlit.app",  # optional
+                    "HTTP-Referer": "https://student-trip-planner.streamlit.app",  # optional
                     "X-Title": "Student Road Trip Planner",  # optional
                 },
                 model="tngtech/deepseek-r1t2-chimera:free",
@@ -128,4 +128,5 @@ if st.button("✨ Generate My Trip Plan"):
 
 st.divider()
 st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
+
 
