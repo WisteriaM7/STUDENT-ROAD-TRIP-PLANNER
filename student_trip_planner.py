@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from openai import OpenAI
 
 # -------------------------
-# PAGE CONFIG
+# CONFIG
 # -------------------------
 st.set_page_config(page_title="Student Road Trip Planner", layout="wide")
 
@@ -26,7 +26,6 @@ with col2:
 
 mode = st.radio("🚙 Travel Mode", ["Car", "Bus", "Train"], horizontal=True)
 
-# Trip vibe selection
 vibe = st.selectbox(
     "🎭 Trip Vibe",
     ["Adventure 🌄", "Chill 🌴", "Culture 🏛️", "Foodie 🍲", "Nature 🌿"],
@@ -55,7 +54,6 @@ misc_cost = 500 * num_people
 total_cost = travel_cost + stay_cost + food_cost + misc_cost
 per_person = total_cost / num_people
 
-# Budget breakdown
 data = {
     "Category": ["Travel", "Accommodation", "Food", "Misc"],
     "Cost (INR)": [travel_cost, stay_cost, food_cost, misc_cost],
@@ -63,7 +61,7 @@ data = {
 df = pd.DataFrame(data)
 
 # -------------------------
-# SIDE-BY-SIDE LAYOUT
+# SIDE-BY-SIDE
 # -------------------------
 col_table, col_chart = st.columns(2, gap="medium")
 
@@ -83,52 +81,50 @@ with col_chart:
 st.divider()
 
 # -------------------------
-# AI TRIP PLANNER (OpenRouter)
+# AI TRIP PLANNER
 # -------------------------
-st.header("🧠 AI Trip Plan with DeepSeek (via OpenRouter)")
+st.header("🧠 AI Trip Plan (DeepSeek via OpenRouter)")
 
-api_key = st.text_input("🔑 Enter your OpenRouter API Key", type="password")
+# Hardcoded OpenRouter API key (replace this with your own key)
+OPENROUTER_API_KEY = api_key
 
 if st.button("✨ Generate My Trip Plan"):
-    if not api_key:
-        st.warning("Please enter your OpenRouter API key first.")
-    else:
-        with st.spinner("Planning your road trip..."):
-            try:
-                client = OpenAI(
-                    base_url="https://openrouter.ai/api/v1",
-                    api_key=api_key,
-                )
+    with st.spinner("Planning your road trip..."):
+        try:
+            client = OpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=OPENROUTER_API_KEY,
+            )
 
-                prompt = f"""
-                You are an expert student travel planner.
-                Plan a {days}-day road trip for {num_people} students
-                from {start_city} to {dest_city} by {mode}.
-                The total budget is ₹{total_cost:,.0f} (about ₹{per_person:,.0f} per person).
-                Trip vibe: {vibe}.
-                Include:
-                - A short route summary
-                - A day-by-day itinerary (in a student tone)
-                - Budget tips and hacks
-                - How to match the trip vibe in activities and stay choices
-                Keep it under 250 words and sound fun, conversational, and practical.
-                """
+            prompt = f"""
+            You are an expert student travel planner.
+            Plan a {days}-day road trip for {num_people} students
+            from {start_city} to {dest_city} by {mode}.
+            The total budget is ₹{total_cost:,.0f} (about ₹{per_person:,.0f} per person).
+            Trip vibe: {vibe}.
+            Include:
+            - A short route summary
+            - A day-by-day itinerary (in a student tone)
+            - Budget tips and hacks
+            - How to match the trip vibe in activities and stay choices
+            Keep it under 250 words and sound fun, conversational, and practical.
+            """
 
-                completion = client.chat.completions.create(
-                    extra_headers={
-                        "HTTP-Referer": "https://studenttripplanner.streamlit.app",  # optional
-                        "X-Title": "Student Road Trip Planner",  # optional
-                    },
-                    model="tngtech/deepseek-r1t2-chimera:free",
-                    messages=[{"role": "user", "content": prompt}],
-                )
+            completion = client.chat.completions.create(
+                extra_headers={
+                    "HTTP-Referer": "https://studenttripplanner.streamlit.app",  # optional
+                    "X-Title": "Student Road Trip Planner",  # optional
+                },
+                model="tngtech/deepseek-r1t2-chimera:free",
+                messages=[{"role": "user", "content": prompt}],
+            )
 
-                trip_plan = completion.choices[0].message.content
-                st.success("✅ Trip Plan Generated!")
-                st.write(trip_plan)
+            plan = completion.choices[0].message.content
+            st.success("✅ Trip Plan Generated!")
+            st.write(plan)
 
-            except Exception as e:
-                st.error(f"⚠️ Error generating trip plan: {e}")
+        except Exception as e:
+            st.error(f"⚠️ Error generating trip plan: {e}")
 
 st.divider()
 st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
