@@ -57,7 +57,7 @@ This Streamlit app helps students plan road trips by estimating budgets, visuali
      ```bash
      OPENROUTER_API_KEY = "your_openrouter_api_key_here"
 
-##📜 License
+## 📜 License
 
 This project is open-source and available under the Apache 2.0 License.
 Feel free to fork, remix, and make it your own student travel planner.
