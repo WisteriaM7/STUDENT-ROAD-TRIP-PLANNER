@@ -83,7 +83,7 @@ st.divider()
 # -------------------------
 # AI TRIP PLANNER
 # -------------------------
-st.header("🧠 AI Trip Plan (DeepSeek via OpenRouter)")
+st.header("🧠 AI Trip Plan")
 
 # Hardcoded OpenRouter API key (replace this with your own key)
 if st.button("✨ Generate My Trip Plan"):
@@ -126,6 +126,7 @@ if st.button("✨ Generate My Trip Plan"):
 
 st.divider()
 st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
+
 
 
 
