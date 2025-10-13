@@ -37,4 +37,12 @@ This Streamlit app helps students plan road trips by estimating budgets, visuali
    ```bash
    git clone https://github.com/yourusername/student-road-trip-planner.git
    cd student-road-trip-planner
-  
+
+2. **Create a virtual environment (recommended)**
+
+```bash
+python -m venv venv
+source venv/bin/activate    # Mac/Linux
+venv\Scripts\activate       # Windows
+
+ **Install dependencies**
