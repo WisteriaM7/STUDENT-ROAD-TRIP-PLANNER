@@ -91,7 +91,7 @@ if st.button("✨ Generate My Trip Plan"):
         try:
             client = OpenAI(
                 base_url="https://openrouter.ai/api/v1",
-                api_key=OPENROUTER_API_KEY,
+                api_key=st.secrets.OPENROUTER_API_KEY,
             )
 
             prompt = f"""
@@ -126,6 +126,7 @@ if st.button("✨ Generate My Trip Plan"):
 
 st.divider()
 st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
+
 
 
 
