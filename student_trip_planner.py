@@ -1,128 +1,134 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from langchain.chat_models import ChatOllama
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
+from openai import OpenAI
 
-# ---- Streamlit Setup ---- #
-st.set_page_config(layout="wide")
+# -------------------------
+# PAGE CONFIG
+# -------------------------
+st.set_page_config(page_title="Student Road Trip Planner", layout="wide")
+
 st.title("🚗 Student Road Trip Planner")
-st.caption("Plan budget-friendly, fun student trips 💸")
+st.caption("Plan affordable, fun, and memorable student getaways 💸")
 
-# ---- Memory Management ---- #
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
-
-if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferMemory(return_messages=True)
-
-MAX_HISTORY = 2  # Keep last 2 interactions
-
-def trim_memory():
-    while len(st.session_state.chat_history) > MAX_HISTORY * 2:
-        st.session_state.chat_history.pop(0)
-        if st.session_state.chat_history:
-            st.session_state.chat_history.pop(0)
-
-# ---- LangChain LLM Setup ---- #
-llm = ChatOllama(model="mistral", streaming=True)
-
-prompt_template = PromptTemplate(
-    input_variables=["history", "human_input"],
-    template="""
-You are a fun, student-friendly travel planner.
-History: {history}
-User Trip Input: {human_input}
-Provide:
-- A detailed day-by-day itinerary
-- Budget-friendly tips
-- Activities matching the student vibe
-- Keep it casual and concise
-Assistant:
-"""
-)
-
-chain = LLMChain(llm=llm, prompt=prompt_template, memory=st.session_state.memory)
-
-# ---- Trip Input Section ---- #
+# -------------------------
+# TRIP INPUTS
+# -------------------------
 st.header("🧭 Trip Details")
 
 col1, col2 = st.columns(2)
 with col1:
     start_city = st.text_input("Starting City", "Delhi")
-    num_people = st.slider("Number of Students", 1, 10, 4)
+    num_people = st.slider("Number of Friends", 1, 50, 4)
 with col2:
     dest_city = st.text_input("Destination City", "Goa")
-    days = st.slider("Trip Duration (Days)", 1, 10, 5)
+    days = st.slider("Trip Duration (Days)", 1, 25, 5)
 
 mode = st.radio("🚙 Travel Mode", ["Car", "Bus", "Train"], horizontal=True)
-vibe = st.selectbox("🎭 Trip Vibe", ["Adventure 🌄", "Chill 🌴", "Culture 🏛️", "Foodie 🍲", "Nature 🌿"])
 
-# ---- Budget Estimation ---- #
+# Trip vibe selection
+vibe = st.selectbox(
+    "🎭 Trip Vibe",
+    ["Adventure 🌄", "Chill 🌴", "Culture 🏛️", "Foodie 🍲", "Nature 🌿"],
+)
+
+st.divider()
+
+# -------------------------
+# BUDGET ESTIMATION
+# -------------------------
 st.header("💰 Quick Budget Estimate")
+
 distance = st.slider("📏 Estimated Distance (km)", 100, 2000, 500)
 
-travel_cost = distance * (10 if mode == "Car" else 5 if mode == "Bus" else 6)
+if mode == "Car":
+    travel_cost = distance * 10
+elif mode == "Bus":
+    travel_cost = distance * 5
+else:
+    travel_cost = distance * 6
+
 stay_cost = 800 * days * num_people
 food_cost = 300 * days * num_people
 misc_cost = 500 * num_people
+
 total_cost = travel_cost + stay_cost + food_cost + misc_cost
 per_person = total_cost / num_people
 
-budget_data = {
-    "Category": ["Travel", "Stay", "Food", "Misc"],
+# Budget breakdown
+data = {
+    "Category": ["Travel", "Accommodation", "Food", "Misc"],
     "Cost (INR)": [travel_cost, stay_cost, food_cost, misc_cost],
 }
-df_budget = pd.DataFrame(budget_data)
+df = pd.DataFrame(data)
 
+# -------------------------
+# SIDE-BY-SIDE LAYOUT
+# -------------------------
 col_table, col_chart = st.columns(2, gap="medium")
+
 with col_table:
     st.subheader("🧾 Budget Breakdown")
-    st.table(df_budget)
-    st.metric("💸 Total Cost", f"₹{total_cost:,.0f}")
+    st.table(df)
+    st.metric("💸 Total Trip Cost", f"₹{total_cost:,.0f}")
     st.metric("🧍 Per Person", f"₹{per_person:,.0f}")
 
 with col_chart:
     st.subheader("📊 Cost Distribution")
     fig, ax = plt.subplots()
-    ax.pie(df_budget["Cost (INR)"], labels=df_budget["Category"], autopct="%1.1f%%", startangle=90)
+    ax.pie(df["Cost (INR)"], labels=df["Category"], autopct="%1.1f%%", startangle=90)
     ax.axis("equal")
     st.pyplot(fig)
 
 st.divider()
 
-# ---- Display Chat History ---- #
-for msg in st.session_state.chat_history:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+# -------------------------
+# AI TRIP PLANNER (OpenRouter)
+# -------------------------
+st.header("🧠 AI Trip Plan with DeepSeek (via OpenRouter)")
 
-# ---- Handle Trip Plan Generation ---- #
-trip_prompt = f"""
-Plan a {days}-day student road trip for {num_people} students from {start_city} to {dest_city} by {mode}.
-Budget: ₹{total_cost:,.0f} (~₹{per_person:,.0f} per person)
-Trip vibe: {vibe}
-Include a daily itinerary, budget tips, and fun student activities.
-Keep it concise and casual.
-"""
+api_key = st.text_input("🔑 Enter your OpenRouter API Key", type="password")
 
-if st.button("✨ Generate Trip Plan"):
-    # Add user message
-    st.session_state.chat_history.append({"role": "user", "content": trip_prompt})
-    trim_memory()
+if st.button("✨ Generate My Trip Plan"):
+    if not api_key:
+        st.warning("Please enter your OpenRouter API key first.")
+    else:
+        with st.spinner("Planning your road trip..."):
+            try:
+                client = OpenAI(
+                    base_url="https://openrouter.ai/api/v1",
+                    api_key=api_key,
+                )
 
-    # Stream assistant response
-    with st.chat_message("assistant"):
-        response_container = st.empty()
-        full_response = ""
+                prompt = f"""
+                You are an expert student travel planner.
+                Plan a {days}-day road trip for {num_people} students
+                from {start_city} to {dest_city} by {mode}.
+                The total budget is ₹{total_cost:,.0f} (about ₹{per_person:,.0f} per person).
+                Trip vibe: {vibe}.
+                Include:
+                - A short route summary
+                - A day-by-day itinerary (in a student tone)
+                - Budget tips and hacks
+                - How to match the trip vibe in activities and stay choices
+                Keep it under 250 words and sound fun, conversational, and practical.
+                """
 
-        for chunk in chain.stream({"human_input": trip_prompt}):
-            if isinstance(chunk, dict) and "text" in chunk:
-                full_response += chunk["text"]
-                response_container.markdown(full_response)
+                completion = client.chat.completions.create(
+                    extra_headers={
+                        "HTTP-Referer": "https://studenttripplanner.streamlit.app",  # optional
+                        "X-Title": "Student Road Trip Planner",  # optional
+                    },
+                    model="tngtech/deepseek-r1t2-chimera:free",
+                    messages=[{"role": "user", "content": prompt}],
+                )
 
-    st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-    trim_memory()
+                trip_plan = completion.choices[0].message.content
+                st.success("✅ Trip Plan Generated!")
+                st.write(trip_plan)
+
+            except Exception as e:
+                st.error(f"⚠️ Error generating trip plan: {e}")
 
 st.divider()
+st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
