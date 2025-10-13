@@ -40,9 +40,24 @@ This Streamlit app helps students plan road trips by estimating budgets, visuali
 
 2. **Create a virtual environment (recommended)**
 
-```bash
-python -m venv venv
-source venv/bin/activate    # Mac/Linux
-venv\Scripts\activate       # Windows
+   ```bash
+   python -m venv venv
+   source venv/bin/activate    # Mac/Linux
+   venv\Scripts\activate       # Windows
 
- **Install dependencies**
+3. **Install dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+
+4. **Set up your OpenRouter API key**
+   * Sign up at https://openrouter.ai
+   * Get your API key from the dashboard
+   * Create a .streamlit/secrets.toml file in your project root:
+     ```bash
+     OPENROUTER_API_KEY = "your_openrouter_api_key_here"
+
+##📜 License
+
+This project is open-source and available under the Apache 2.0 License.
+Feel free to fork, remix, and make it your own student travel planner.
