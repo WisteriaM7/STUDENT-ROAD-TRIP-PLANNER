@@ -1,3 +1,4 @@
 langchain
 matplotlib
 langchain-community
+openai
