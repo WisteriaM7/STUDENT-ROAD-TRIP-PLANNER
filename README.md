@@ -5,6 +5,10 @@ This Streamlit app helps students plan road trips by estimating budgets, visuali
 
 ---
 
+![WEBSITE VIEW](https://github.com/WisteriaM7/STUDENT-ROAD-TRIP-PLANNER/blob/main/APP%20VIEW/Screenshot%202025-10-14%20120116.png)
+
+---
+
 ## ✨ Features
 
 * 🧭 **Trip Input Panel** – Enter trip details like cities, duration, and travel mode  
@@ -56,6 +60,8 @@ This Streamlit app helps students plan road trips by estimating budgets, visuali
    * Create a .streamlit/secrets.toml file in your project root:
      ```bash
      OPENROUTER_API_KEY = "your_openrouter_api_key_here"
+   
+---
 
 ## 📜 License
 
