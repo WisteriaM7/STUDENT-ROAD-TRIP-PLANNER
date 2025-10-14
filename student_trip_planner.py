@@ -18,10 +18,10 @@ st.header("🧭 Trip Details")
 
 col1, col2 = st.columns(2)
 with col1:
-    start_city = st.text_input("Starting City", "Delhi")
+    start_city = st.text_input("Starting City", placeholder="e.g., Delhi")
     num_people = st.slider("Number of Friends", 1, 50, 4)
 with col2:
-    dest_city = st.text_input("Destination City", "Goa")
+    dest_city = st.text_input("Destination City", placeholder="e.g., Goa")
     days = st.slider("Trip Duration (Days)", 1, 25, 5)
 
 mode = st.radio("🚙 Travel Mode", ["Car", "Bus", "Train"], horizontal=True)
@@ -126,6 +126,7 @@ if st.button("✨ Generate My Trip Plan"):
 
 st.divider()
 st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
+
 
 
 
