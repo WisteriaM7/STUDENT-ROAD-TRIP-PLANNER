@@ -113,7 +113,7 @@ if st.button("✨ Generate My Trip Plan"):
                     "HTTP-Referer": "https://student-trip-planner.streamlit.app",  # optional
                     "X-Title": "Student Road Trip Planner",  # optional
                 },
-                model="qwen/qwen3-next-80b-a3b-instruct:free",
+                model="z-ai/glm-4.5-air:free",
                 messages=[{"role": "user", "content": prompt}],
             )
 
