@@ -6,10 +6,10 @@ from openai import OpenAI
 # -------------------------
 # CONFIG
 # -------------------------
-st.set_page_config(page_title="Student Road Trip Planner", layout="wide")
+st.set_page_config(page_title="Road Trip Planner", layout="wide")
 
-st.title("🚗 Student Road Trip Planner")
-st.caption("Plan affordable, fun, and memorable student getaways 💸")
+st.title("🗺️ Road Trip Planner")
+st.caption("Plan affordable, fun, and memorable getaways 💸")
 
 # -------------------------
 # TRIP INPUTS
@@ -19,7 +19,7 @@ st.header("🧭 Trip Details")
 col1, col2 = st.columns(2)
 with col1:
     start_city = st.text_input("Starting City", placeholder="e.g., Delhi")
-    num_people = st.slider("Number of Friends", 1, 50, 4)
+    num_people = st.slider("Number of Travellers", 1, 50, 4)
 with col2:
     dest_city = st.text_input("Destination City", placeholder="e.g., Goa")
     days = st.slider("Trip Duration (Days)", 1, 25, 5)
@@ -85,7 +85,6 @@ st.divider()
 # -------------------------
 st.header("🧠 AI Trip Plan")
 
-# Hardcoded OpenRouter API key (replace this with your own key)
 if st.button("✨ Generate My Trip Plan"):
     with st.spinner("Planning your road trip..."):
         try:
@@ -95,23 +94,23 @@ if st.button("✨ Generate My Trip Plan"):
             )
 
             prompt = f"""
-            You are an expert student travel planner.
-            Plan a {days}-day road trip for {num_people} students
+            You are an expert travel planner.
+            Plan a {days}-day road trip for {num_people} travellers
             from {start_city} to {dest_city} by {mode}.
             The total budget is ₹{total_cost:,.0f} (about ₹{per_person:,.0f} per person).
             Trip vibe: {vibe}.
             Include:
             - A short route summary
-            - A day-by-day itinerary (in a student tone)
-            - Budget tips and hacks
+            - A day-by-day itinerary
+            - Budget tips and money-saving hacks
             - How to match the trip vibe in activities and stay choices
             Keep it under 250 words and sound fun, conversational, and practical.
             """
 
             completion = client.chat.completions.create(
                 extra_headers={
-                    "HTTP-Referer": "https://student-trip-planner.streamlit.app",  # optional
-                    "X-Title": "Student Road Trip Planner",  # optional
+                    "HTTP-Referer": "https://road-trip-getaway-planner.streamlit.app/",
+                    "X-Title": "Road Trip Planner",
                 },
                 model="z-ai/glm-4.5-air:free",
                 messages=[{"role": "user", "content": prompt}],
@@ -126,9 +125,3 @@ if st.button("✨ Generate My Trip Plan"):
 
 st.divider()
 st.caption("Made with ❤️ using Streamlit + OpenRouter")
-
-
-
-
-
-
