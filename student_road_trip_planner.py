@@ -113,7 +113,7 @@ if st.button("✨ Generate My Trip Plan"):
                     "HTTP-Referer": "https://student-trip-planner.streamlit.app",  # optional
                     "X-Title": "Student Road Trip Planner",  # optional
                 },
-                model="tngtech/deepseek-r1t2-chimera:free",
+                model="google/gemma-4-31b-it:free",
                 messages=[{"role": "user", "content": prompt}],
             )
 
