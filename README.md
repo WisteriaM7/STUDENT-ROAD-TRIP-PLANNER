@@ -4,7 +4,7 @@ This Streamlit app helps you plan road trips by estimating budgets, visualizing 
 
 ---
 
-![WEBSITE VIEW](https://github.com/WisteriaM7/ROAD-TRIP-PLANNER/blob/main/APP%20VIEW/Screenshot%202025-10-14%20120116.png)
+![WEBSITE VIEW](https://github.com/WisteriaM7/ROAD-TRIP-PLANNER/blob/main/APP%20VIEW/Screenshot%202026-04-27%20233114.png)
 
 ---
 
