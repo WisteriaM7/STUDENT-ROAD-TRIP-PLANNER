@@ -125,7 +125,7 @@ if st.button("✨ Generate My Trip Plan"):
             st.error(f"⚠️ Error generating trip plan: {e}")
 
 st.divider()
-st.caption("Made with ❤️ using Streamlit + OpenRouter + DeepSeek")
+st.caption("Made with ❤️ using Streamlit + OpenRouter")
 
 
 
