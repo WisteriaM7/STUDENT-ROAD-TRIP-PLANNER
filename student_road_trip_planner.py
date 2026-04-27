@@ -113,7 +113,7 @@ if st.button("✨ Generate My Trip Plan"):
                     "HTTP-Referer": "https://student-trip-planner.streamlit.app",  # optional
                     "X-Title": "Student Road Trip Planner",  # optional
                 },
-                model="meta-llama/llama-3.2-3b-instruct:free",
+                model="nvidia/llama-nemotron-embed-vl-1b-v2:free",
                 messages=[{"role": "user", "content": prompt}],
             )
 
