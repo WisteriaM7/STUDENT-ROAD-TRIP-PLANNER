@@ -26,7 +26,7 @@ This Streamlit app helps you plan road trips by estimating budgets, visualizing 
 | **Pandas**                  | Data handling and table display |
 | **Matplotlib**              | Cost distribution pie chart     |
 | **OpenRouter API**          | Unified access to 400+ models; routes requests to the best available provider with fallbacks for high uptime |
-| **DeepSeek R1T2 Chimera**   | High-performance AI model (`tngtech/deepseek-r1t2-chimera`) via OpenRouter |
+| **Z.ai/GLM4.5-AIR**   | High-performance AI model (`z-ai/glm-4.5-air:free`) via OpenRouter |
 
 > 💡 **Why OpenRouter?**  
 > OpenRouter provides a single, OpenAI-compatible API to access top models like DeepSeek with **lower latency (~2.5s)**, **edge-based inference**, and **automatic failover** — so your app stays reliable even under load.
